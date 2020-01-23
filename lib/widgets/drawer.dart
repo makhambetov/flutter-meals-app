@@ -23,14 +23,22 @@ class MainDrawer extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20),
-          _buildListItem('Meals', Icons.restaurant),
-          _buildListItem('Filters', Icons.filter),
+          _buildListItem(
+            'Meals',
+            Icons.restaurant,
+            () => Navigator.pushNamed(context, '/'),
+          ),
+          _buildListItem(
+            'Filters',
+            Icons.filter,
+            () => Navigator.pushNamed(context, '/filters'),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildListItem(String title, IconData icon) {
+  Widget _buildListItem(String title, IconData icon, Function tapHandler) {
     return ListTile(
       leading: Icon(icon, size: 25),
       title: Text(
@@ -41,7 +49,7 @@ class MainDrawer extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ),
       ),
-      onTap: () => {},
+      onTap: tapHandler,
     );
   }
 }
