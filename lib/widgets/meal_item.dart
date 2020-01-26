@@ -8,6 +8,7 @@ class MealItem extends StatelessWidget {
   final String id;
   final String title;
   final String imageUrl;
+  final Function removeItem;
 
   final int duration;
   final Complexity complexity;
@@ -20,6 +21,7 @@ class MealItem extends StatelessWidget {
     @required this.duration,
     @required this.complexity,
     @required this.affordability,
+    @required this.removeItem,
   });
 
   @override
@@ -104,6 +106,13 @@ class MealItem extends StatelessWidget {
   }
 
   void selectMeal(ctx) {
-    Navigator.of(ctx).pushNamed(MealDetail.routeName, arguments: id);
+    Navigator.of(ctx).pushNamed(MealDetail.routeName, arguments: id)
+        .then((mealId) {
+          print(mealId);
+
+          if (mealId != null) {
+            removeItem(mealId);
+          }
+        });
   }
 }
