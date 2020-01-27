@@ -108,8 +108,6 @@ class MealItem extends StatelessWidget {
   void selectMeal(ctx) {
     Navigator.of(ctx).pushNamed(MealDetail.routeName, arguments: id)
         .then((mealId) {
-          print(mealId);
-
           if (mealId != null) {
             removeItem(mealId);
           }

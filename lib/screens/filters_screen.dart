@@ -4,16 +4,30 @@ import '../widgets/drawer.dart';
 
 class FiltersScreen extends StatefulWidget {
   static const routeName = '/filters';
+  Function setFilters;
+
+  final Map<String, bool> filters;
+
+  FiltersScreen(this.filters, this.setFilters);
 
   @override
   _FiltersScreenState createState() => _FiltersScreenState();
 }
 
 class _FiltersScreenState extends State<FiltersScreen> {
-  var _isGlutenFree = false;
-  var _isLactoseFree = false;
-  var _isVegetarian = false;
-  var _isVegan = false;
+  var _glutenFree = false;
+  var _lactoseFree = false;
+  var _vegetarian = false;
+  var _vegan = false;
+
+  @override
+  initState() {
+    super.initState();
+    _glutenFree = widget.filters['glutan'];
+    _lactoseFree = widget.filters['lactose'];
+    _vegan = widget.filters['vegan'];
+    _vegetarian = widget.filters['vegetarian'];
+  }
 
   Widget _buildSwitchItem(
       bool value, String title, String subtitle, Function handler) {
@@ -31,6 +45,22 @@ class _FiltersScreenState extends State<FiltersScreen> {
       appBar: AppBar(
         title: Text('Filters'),
       ),
+      drawer: MainDrawer(),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.save),
+        onPressed: () {
+          final selectedFilters = {
+            'glutan': _glutenFree,
+            'lactose': _lactoseFree,
+            'vegetarian': _vegetarian,
+            'vegan': _vegan,
+          };
+
+          widget.setFilters(selectedFilters);
+
+          Navigator.pushReplacementNamed(context, '/');
+        },
+      ),
       body: Column(
         children: <Widget>[
           Container(
@@ -44,42 +74,42 @@ class _FiltersScreenState extends State<FiltersScreen> {
             child: ListView(
               children: <Widget>[
                 _buildSwitchItem(
-                  _isVegetarian,
+                  _vegetarian,
                   'Vegetarian',
                   'Only vegetarian meals',
                   (bool newVal) {
                     setState(() {
-                      _isVegetarian = newVal;
+                      _vegetarian = newVal;
                     });
                   },
                 ),
                 _buildSwitchItem(
-                  _isVegan,
+                  _vegan,
                   'isVegan',
                   'Only vegan meals',
-                      (bool newVal) {
+                  (bool newVal) {
                     setState(() {
-                      _isVegan = newVal;
+                      _vegan = newVal;
                     });
                   },
                 ),
                 _buildSwitchItem(
-                  _isGlutenFree,
+                  _glutenFree,
                   'Gluten free',
                   'Only gluten free meals',
-                      (bool newVal) {
+                  (bool newVal) {
                     setState(() {
-                      _isGlutenFree = newVal;
+                      _glutenFree = newVal;
                     });
                   },
                 ),
                 _buildSwitchItem(
-                  _isLactoseFree,
+                  _lactoseFree,
                   'Lactose free',
                   'Only Lactose free meals',
-                      (bool newVal) {
+                  (bool newVal) {
                     setState(() {
-                      _isLactoseFree = newVal;
+                      _lactoseFree = newVal;
                     });
                   },
                 ),
@@ -88,7 +118,6 @@ class _FiltersScreenState extends State<FiltersScreen> {
           ),
         ],
       ),
-      drawer: MainDrawer(),
     );
   }
 }
